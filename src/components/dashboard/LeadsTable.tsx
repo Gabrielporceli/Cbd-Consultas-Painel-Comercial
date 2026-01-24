@@ -53,6 +53,20 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
     );
   };
 
+  if (leads.length === 0) {
+    return (
+      <div className="rounded-lg border bg-card p-12 text-center">
+        <div className="flex flex-col items-center gap-3">
+          <HelpCircle className="w-12 h-12 text-muted-foreground/50" />
+          <h3 className="text-lg font-medium text-foreground">Nenhum lead encontrado</h3>
+          <p className="text-sm text-muted-foreground max-w-md">
+            Não existem leads no momento. Sincronize com sua planilha para importar novos leads ou aguarde novas entradas.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-lg border bg-card overflow-hidden">
       <Table>
