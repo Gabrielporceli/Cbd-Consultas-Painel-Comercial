@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Founders Grotesk Font Family */
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('/fonts/FoundersGrotesk-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 
-/* Founders Grotesk Font */
 @font-face {
   font-family: 'Founders Grotesk';
   src: url('/fonts/FoundersGrotesk-Regular.otf') format('opentype');
@@ -39,109 +43,186 @@ All colors MUST be HSL.
   font-display: swap;
 }
 
-@layer base {
-  /* Light Mode - Off-White background */
-  :root {
-    --background: 0 0% 96%;
-    --foreground: 0 0% 0%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-
-    --primary: 270 67% 46%;
-    --primary-foreground: 0 0% 96%;
-
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
-
-    --muted: 0 0% 92%;
-    --muted-foreground: 0 0% 20%;
-
-    --accent: 270 67% 46%;
-    --accent-foreground: 0 0% 96%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 96%;
-
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 96%;
-
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 0%;
-
-    --border: 0 0% 0% / 0.1;
-    --input: 0 0% 0% / 0.1;
-    --ring: 270 67% 46%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 0%;
-    --sidebar-primary: 270 67% 46%;
-    --sidebar-primary-foreground: 0 0% 96%;
-    --sidebar-accent: 0 0% 96%;
-    --sidebar-accent-foreground: 0 0% 0%;
-    --sidebar-border: 0 0% 0% / 0.1;
-    --sidebar-ring: 270 67% 46%;
-  }
-
-  /* Dark Mode - Absolute Black background */
-  .dark {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 96%;
-
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 96%;
-
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 96%;
-
-    --primary: 270 67% 46%;
-    --primary-foreground: 0 0% 96%;
-
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 96%;
-
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 76%;
-
-    --accent: 270 67% 46%;
-    --accent-foreground: 0 0% 96%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 96%;
-
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 96%;
-
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 0%;
-
-    --border: 0 0% 96% / 0.15;
-    --input: 0 0% 96% / 0.15;
-    --ring: 270 67% 46%;
-
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 270 67% 46%;
-    --sidebar-primary-foreground: 0 0% 96%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 0% 96% / 0.15;
-    --sidebar-ring: 270 67% 46%;
-  }
+@font-face {
+  font-family: 'Founders Grotesk XCond';
+  src: url('/fonts/FoundersGroteskXCond-Lt.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
 }
 
+@font-face {
+  font-family: 'Founders Grotesk XCond';
+  src: url('/fonts/FoundersGroteskXCond-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GOAT CRM Theme - Dark Mode with Purple Accents */
 @layer base {
+  :root {
+    --background: 240 6% 7%; /* Darker background from lead-goat-flow */
+    --foreground: 0 0% 88%;
+
+    --card: 240 6% 7%;
+    --card-foreground: 0 0% 88%;
+
+    --popover: 240 6% 7%;
+    --popover-foreground: 0 0% 88%;
+
+    --primary: 265 65% 46%; /* #6829c0 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+
+    --accent: 0 0% 25%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 25%;
+    --input: 0 0% 15%;
+    --ring: 265 65% 46%;
+
+    --radius: 1rem;
+
+    /* Premium UI Tokens */
+    --glass-bg: rgba(18, 18, 18, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: 16px;
+
+    --premium-purple: 265 65% 46%;
+    --premium-purple-light: 265 65% 55%;
+    --premium-glow: 265 100% 70%;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: #121212 !important;
+    color: #e1e1e1 !important;
     font-family: 'Founders Grotesk', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #eaeaea !important;
+    @apply font-bold;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-goat-purple to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .glass-effect {
+    background: rgba(18, 18, 18, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .liquid-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: url('/background.gif') no-repeat center center fixed !important;
+    background-size: cover !important;
+    filter: brightness(0.8) contrast(1.1);
+  }
+
+  @keyframes pan-background {
+    0% { background-position: 0% 0%; transform: scale(1); }
+    100% { background-position: 100% 100%; transform: scale(1.05); }
+  }
+
+  .liquid-glass {
+    position: relative;
+    overflow: hidden;
+    background: rgba(18, 18, 18, 0.2) !important; /* Much more transparent */
+    backdrop-filter: blur(40px) saturate(200%) brightness(1.2) !important; /* Increased blur and brightness */
+    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Add noise texture to glass */
+  .liquid-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: -1;
+  }
+  /* Enhanced elements inside glass */
+  .liquid-glass input,
+  .liquid-glass select,
+  .liquid-glass button:not(.btn-primary) {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+    color: white !important;
+  }
+
+  .liquid-glass input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .liquid-glass input:focus,
+  .liquid-glass button:not(.btn-primary):focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(104, 41, 192, 0.2) !important;
   }
 }
+
+@layer components {
+  .btn-primary {
+    @apply bg-goat-purple hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200;
+    color: white !important;
+  }
+
+  .dashboard-glow {
+    @apply transition-all duration-500 ease-in-out;
+    position: relative;
+    margin-bottom: 2px;
+    isolation: isolate;
+  }
+
+  .dashboard-glow:hover {
+    transform: translateY(-4px);
+    @apply shadow-[0_20px_40px_-15px_#000000b3] border-primary/30 bg-white/[0.05];
+    z-index: 10;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6829c0;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}
+

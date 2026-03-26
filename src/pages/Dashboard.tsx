@@ -321,57 +321,70 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8 px-4">
+    <div className="relative min-h-screen">
+      {/* Background Liquid Effect Container */}
+      <div className="liquid-container" aria-hidden="true" />
+      
+      <div className="container relative mx-auto py-10 px-6 z-10">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-4">
-              <img src={goatBlack} alt="Logo" className="h-12 w-auto dark:hidden" />
-              <img src={goatWhite} alt="Logo" className="h-12 w-auto hidden dark:block" />
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-900 to-purple-400 bg-clip-text text-transparent">Dashboard Comercial</h1>
-            </div>
-            <div className="flex items-center gap-3">
+        <div className="mb-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <h1 className="text-4xl font-bold tracking-tight gradient-text">Porceli Company</h1>
+            
+            <div className="flex items-center flex-wrap gap-4">
               {lastSync && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>Última Atualização: {lastSync.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-sm text-sm font-medium">
+                  <Clock className="h-4 w-4 text-goat-purple" />
+                  <span className="text-muted-foreground">Última Atualização: <span className="text-foreground">{lastSync.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span></span>
                   {autoSyncEnabled && (
-                    <span className="text-xs text-primary">• Auto ({syncInterval}min)</span>
+                    <span className="flex items-center gap-1.5 text-[10px] bg-goat-purple/20 text-goat-purple px-2 py-0.5 rounded-full border border-goat-purple/30">
+                      <span className="w-1 h-1 bg-goat-purple rounded-full animate-pulse" />
+                      AUTO {syncInterval}MIN
+                    </span>
                   )}
                 </div>
               )}
-              <Button
-                onClick={syncWithSheets}
-                disabled={isSyncing || !webhookConfig}
-                size="sm"
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
-                Sincronizar
-              </Button>
-              <SheetsConfig 
-                onConfigSave={setWebhookConfig}
-                autoSyncEnabled={autoSyncEnabled}
-                syncInterval={syncInterval}
-                onToggleAutoSync={toggleAutoSync}
-                onUpdateInterval={updateSyncInterval}
-              />
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={syncWithSheets}
+                  disabled={isSyncing || !webhookConfig}
+                  className="bg-goat-purple hover:bg-purple-600 shadow-lg shadow-purple-900/20"
+                >
+                  <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+                  Sincronizar
+                </Button>
+                
+                <SheetsConfig 
+                  onConfigSave={setWebhookConfig}
+                  autoSyncEnabled={autoSyncEnabled}
+                  syncInterval={syncInterval}
+                  onToggleAutoSync={toggleAutoSync}
+                  onUpdateInterval={updateSyncInterval}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Metrics */}
-        <MetricsCards leads={filteredLeads} />
+        {/* Metrics Section */}
+        <section className="animate-fade-in" style={{ animationDelay: '100ms' }}>
+          <MetricsCards leads={filteredLeads} />
+        </section>
 
-        {/* Filters */}
-        <LeadFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          platformFilter={platformFilter}
-          onPlatformChange={setPlatformFilter}
-          statusFilter={statusFilter}
-          onStatusChange={setStatusFilter}
-        />
+        {/* Content Section */}
+        <div className="space-y-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <div className="liquid-glass p-1 rounded-[2rem]">
+            <LeadFilters
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              platformFilter={platformFilter}
+              onPlatformChange={setPlatformFilter}
+              statusFilter={statusFilter}
+              onStatusChange={setStatusFilter}
+            />
+          </div>
+        </div>
 
         {/* Table */}
         <LeadsTable

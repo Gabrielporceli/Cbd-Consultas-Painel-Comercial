@@ -55,12 +55,12 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
 
   if (leads.length === 0) {
     return (
-      <div className="rounded-lg border bg-card p-12 text-center">
-        <div className="flex flex-col items-center gap-3">
-          <HelpCircle className="w-12 h-12 text-muted-foreground/50" />
-          <h3 className="text-lg font-medium text-foreground">Nenhum lead encontrado</h3>
-          <p className="text-sm text-muted-foreground max-w-md">
-            Não existem leads no momento. Sincronize com sua planilha para importar novos leads ou aguarde novas entradas.
+      <div className="liquid-glass p-20 text-center border-white/10 shadow-2xl">
+        <div className="flex flex-col items-center gap-5">
+          <HelpCircle className="w-16 h-16 text-goat-purple/50 animate-pulse-soft" />
+          <h3 className="text-2xl font-bold text-foreground tracking-tight">Nenhum lead encontrado</h3>
+          <p className="text-base text-muted-foreground max-w-md mx-auto">
+            A sua base de dados parece estar vazia. Sincronize com sua planilha para importar novos leads ou aguarde novas entradas.
           </p>
         </div>
       </div>
@@ -68,25 +68,25 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
   }
 
   return (
-    <div className="rounded-lg border bg-card overflow-hidden">
+    <div className="liquid-glass overflow-hidden border border-white/10 shadow-2xl">
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Status</TableHead>
-            <TableHead>Plataforma</TableHead>
-            <TableHead>Data</TableHead>
-            <TableHead>Nome</TableHead>
-            <TableHead>Telefone</TableHead>
-            <TableHead>Atendimento N°</TableHead>
-            <TableHead>Anúncio</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
+        <TableHeader className="bg-white/5">
+          <TableRow className="hover:bg-transparent border-white/10">
+            <TableHead className="font-bold text-foreground">Status</TableHead>
+            <TableHead className="font-bold text-foreground">Plataforma</TableHead>
+            <TableHead className="font-bold text-foreground">Data</TableHead>
+            <TableHead className="font-bold text-foreground">Nome</TableHead>
+            <TableHead className="font-bold text-foreground">Telefone</TableHead>
+            <TableHead className="font-bold text-foreground">Atendimento N°</TableHead>
+            <TableHead className="font-bold text-foreground">Anúncio</TableHead>
+            <TableHead className="text-right font-bold text-foreground">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {leads.map((lead) => (
             <TableRow 
               key={lead.id} 
-              className="cursor-pointer hover:bg-foreground/5 transition-colors duration-150"
+              className="cursor-pointer hover:bg-white/5 transition-colors duration-150 border-white/5"
               onClick={() => onLeadClick(lead)}
             >
               <TableCell>
@@ -95,20 +95,20 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
                   {getStatusBadge(lead.conversion)}
                 </div>
               </TableCell>
-              <TableCell>{getPlatformText(lead.platform)}</TableCell>
-              <TableCell className="text-sm text-muted-foreground">
+              <TableCell className="font-semibold">{getPlatformText(lead.platform)}</TableCell>
+              <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
                 {format(new Date(lead.event_time), "dd/MM/yyyy", { locale: ptBR })}
               </TableCell>
-              <TableCell className="font-medium">{lead.name}</TableCell>
-              <TableCell className="text-sm">{lead.phone_number}</TableCell>
+              <TableCell className="font-medium text-foreground">{lead.name}</TableCell>
+              <TableCell className="text-sm font-mono tracking-tighter">{lead.phone_number}</TableCell>
               <TableCell className="text-sm text-muted-foreground">{lead.attendance_number}</TableCell>
-              <TableCell className="text-sm max-w-[150px] truncate">{lead.ad}</TableCell>
+              <TableCell className="text-sm max-w-[150px] truncate italic text-muted-foreground">{lead.ad}</TableCell>
               <TableCell className="text-right">
                 <div className="flex gap-2 justify-end" onClick={(e) => e.stopPropagation()}>
                   <Button
                     size="sm"
                     variant="outline"
-                    className="text-success border-success/50 hover:bg-success hover:text-success-foreground"
+                    className="h-8 text-xs font-semibold text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all"
                     onClick={() => onQualify(lead.id)}
                     disabled={lead.conversion === "Qualificado"}
                   >
@@ -117,7 +117,7 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
                   <Button
                     size="sm"
                     variant="outline"
-                    className="text-destructive border-destructive/50 hover:bg-destructive hover:text-destructive-foreground"
+                    className="h-8 text-xs font-semibold text-rose-400 border-rose-500/30 hover:bg-rose-500 hover:text-white transition-all"
                     onClick={() => onDisqualify(lead.id)}
                     disabled={lead.conversion === "Desqualificado"}
                   >
