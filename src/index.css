@@ -136,7 +136,7 @@
     height: 100%;
     z-index: -1;
     overflow: hidden;
-    background: url('/background.gif') no-repeat center center fixed !important;
+    background: url('/background.png') no-repeat center center fixed !important;
     background-size: cover !important;
     filter: brightness(0.8) contrast(1.1);
   }
