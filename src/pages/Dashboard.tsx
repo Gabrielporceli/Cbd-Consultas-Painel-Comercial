@@ -329,7 +329,7 @@ const Dashboard = () => {
         {/* Header */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <h1 className="text-4xl font-bold tracking-tight gradient-text">Painel Comercial | Porceli Tracking</h1>
+            <h1 className="text-4xl font-light tracking-tight gradient-text">Painel Comercial | Porceli Tracking</h1>
             
             <div className="flex items-center flex-wrap gap-4">
               {lastSync && (
