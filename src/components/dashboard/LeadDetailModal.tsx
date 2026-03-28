@@ -2,6 +2,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState, useEffect } from "react";
+
 import { Lead } from "@/types/lead";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -15,17 +19,107 @@ import {
   Globe,
   Fingerprint,
   Activity,
-  Target
+  Target,
+  Edit2,
+  Check,
+  X
 } from "lucide-react";
 
 interface LeadDetailModalProps {
   lead: Lead | null;
   isOpen: boolean;
   onClose: () => void;
+  onUpdate: (leadId: string, updates: Partial<Lead>) => Promise<void>;
 }
 
-export const LeadDetailModal = ({ lead, isOpen, onClose }: LeadDetailModalProps) => {
+export const LeadDetailModal = ({ lead, isOpen, onClose, onUpdate }: LeadDetailModalProps) => {
+  const [formData, setFormData] = useState<Partial<Lead>>({});
+  const [activeField, setActiveField] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (lead) {
+      setFormData({
+        name: lead.name,
+        email: lead.email,
+        phone_number: lead.phone_number
+      });
+      setActiveField(null);
+    }
+  }, [lead]);
+
   if (!lead) return null;
+
+  const EditableField = ({ 
+    value, 
+    onSave, 
+    className, 
+    placeholder 
+  }: { 
+    value: string, 
+    onSave: (val: string) => Promise<void>, 
+    className?: string,
+    placeholder: string
+  }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentValue, setCurrentValue] = useState(value);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+      setCurrentValue(value);
+    }, [value]);
+
+    const handleSave = async () => {
+      if (currentValue === value) {
+        setIsEditing(false);
+        return;
+      }
+      setIsLoading(true);
+      try {
+        await onSave(currentValue);
+        setIsEditing(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isEditing) {
+      return (
+        <div className="flex items-center gap-1.5 animate-in fade-in duration-200 w-full max-w-[280px]">
+          <Input 
+            value={currentValue}
+            onChange={(e) => setCurrentValue(e.target.value)}
+            className="h-8 bg-white/5 border-white/10 focus-visible:ring-primary/30 flex-1"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleSave();
+              if (e.key === 'Escape') {
+                setCurrentValue(value);
+                setIsEditing(false);
+              }
+            }}
+          />
+          <div className="flex items-center gap-0.5 shrink-0">
+            <Button size="icon" variant="ghost" className="h-8 w-8 text-success hover:text-success hover:bg-success/20" onClick={handleSave} disabled={isLoading}>
+              <Check className="h-4 w-4" />
+            </Button>
+            <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/20" onClick={() => setIsEditing(false)} disabled={isLoading}>
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div 
+        className={`group relative cursor-pointer hover:bg-white/5 p-1 rounded-md transition-all -ml-1 ${!value ? 'italic text-muted-foreground' : ''}`}
+        onClick={() => setIsEditing(true)}
+      >
+        <span className={className}>{value || placeholder}</span>
+        <Edit2 className="w-3 h-3 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground" />
+      </div>
+    );
+  };
 
   const openWhatsApp = () => {
     if (lead.whatsapp_link) {
@@ -60,41 +154,61 @@ export const LeadDetailModal = ({ lead, isOpen, onClose }: LeadDetailModalProps)
         <div className="mt-6 space-y-6">
           {/* Informações Principais */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-primary">Informações Principais</h3>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-primary">{lead.name}</span>
-                <Badge variant="outline" className={
-                  lead.conversion === "Qualificado" 
-                    ? "bg-success/20 text-success border-success/30" 
-                    : lead.conversion === "Desqualificado"
-                    ? "bg-destructive/20 text-destructive border-destructive/30"
-                    : "bg-muted/50 text-foreground/60 border-border"
-                }>
-                  {lead.conversion}
-                </Badge>
-              </div>
-              
-              <DetailRow 
-                icon={Calendar} 
-                label="Data e Hora" 
-                value={format(new Date(lead.event_time), "dd 'de' MMMM 'de' yyyy 'às' HH:mm", { locale: ptBR })} 
-              />
-              
-              <DetailRow icon={Globe} label="Plataforma" value={lead.platform} />
-              
-              {lead.phone_number && (
-                <div className="flex items-start gap-3 py-3">
+            <h3 className="text-lg font-semibold mb-4 text-foreground">Informações Principais</h3>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1 mr-4">
+                    <EditableField
+                      value={formData.name || lead.name || ""}
+                      onSave={(val) => {
+                        const updates = { ...formData, name: val };
+                        setFormData(updates);
+                        return onUpdate(lead.id, updates);
+                      }}
+                      className="text-2xl font-bold text-foreground"
+                      placeholder="Nome não informado"
+                    />
+                  </div>
+                  <Badge variant="outline" className={
+                    lead.conversion === "Qualificado" 
+                      ? "bg-success/20 text-success border-success/30" 
+                      : lead.conversion === "Desqualificado"
+                      ? "bg-destructive/20 text-destructive border-destructive/30"
+                      : "bg-muted/50 text-foreground/60 border-border"
+                  }>
+                    {lead.conversion}
+                  </Badge>
+                </div>
+                
+                <DetailRow 
+                  icon={Calendar} 
+                  label="Data e Hora" 
+                  value={`${format(new Date(lead.event_time), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })} às ${lead.hora_min || (lead as any)["hora/min"] || "00:00"}`} 
+                />
+                
+                <DetailRow icon={Globe} label="Plataforma" value={lead.platform} />
+                
+                <div className="flex items-start gap-3 py-3 border-b border-white/5 last:border-0">
                   <Phone className="w-5 h-5 text-muted-foreground mt-0.5" />
                   <div className="flex-1">
                     <p className="text-sm text-muted-foreground">Telefone</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <p className="text-sm font-medium">{lead.phone_number}</p>
-                      {lead.whatsapp_link && (
+                    <div className="mt-1">
+                      <EditableField
+                        value={formData.phone_number || lead.phone_number || ""}
+                        onSave={(val) => {
+                          const updates = { ...formData, phone_number: val };
+                          setFormData(updates);
+                          return onUpdate(lead.id, updates);
+                        }}
+                        className="text-sm font-medium"
+                        placeholder="Telefone não informado"
+                      />
+                      {lead.whatsapp_link && lead.phone_number && (
                         <Button 
                           size="sm" 
                           variant="outline" 
-                          className="h-7"
+                          className="h-7 mt-2"
                           onClick={openWhatsApp}
                         >
                           <ExternalLink className="w-3 h-3 mr-1" />
@@ -104,10 +218,26 @@ export const LeadDetailModal = ({ lead, isOpen, onClose }: LeadDetailModalProps)
                     </div>
                   </div>
                 </div>
-              )}
-              
-              <DetailRow icon={Mail} label="E-mail" value={lead.email} />
-              <DetailRow icon={Fingerprint} label="Atendimento N°" value={lead.attendance_number} />
+                
+                <div className="flex items-start gap-3 py-3 border-b border-white/5 last:border-0">
+                  <Mail className="w-5 h-5 text-muted-foreground mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground">E-mail</p>
+                    <EditableField
+                      value={formData.email || lead.email || ""}
+                      onSave={(val) => {
+                        const updates = { ...formData, email: val };
+                        setFormData(updates);
+                        return onUpdate(lead.id, updates);
+                      }}
+                      className="text-sm font-medium mt-1"
+                      placeholder="E-mail não informado"
+                    />
+                  </div>
+                </div>
+                
+                <DetailRow icon={Fingerprint} label="Atendimento N°" value={lead.attendance_number} />
+              </div>
             </div>
           </div>
 
@@ -117,7 +247,7 @@ export const LeadDetailModal = ({ lead, isOpen, onClose }: LeadDetailModalProps)
           {lead.message && (
             <>
               <div>
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-primary">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-foreground">
               <MessageSquare className="w-5 h-5" />
               Mensagem Original
             </h3>

@@ -137,20 +137,45 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, [autoSyncEnabled, syncInterval, webhookConfig, syncWithSheets]);
 
-  const updateLeadStatus = async (leadId: string, status: ConversionStatus) => {
+  const updateLead = async (leadId: string, updates: Partial<Lead>) => {
     if (!webhookConfig?.updateUrl) return;
+
+    // Log para debug
+    console.log("Enviando atualização para o webhook:", { id: leadId, ...updates });
 
     try {
       const response = await fetch(webhookConfig.updateUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: leadId, conversion: status })
+        body: JSON.stringify({ id: leadId, ...updates })
       });
 
-      if (!response.ok) throw new Error("Erro ao atualizar");
+      if (!response.ok) throw new Error("Erro ao atualizar no servidor");
     } catch (error) {
       console.error("Erro ao atualizar:", error);
       throw error;
+    }
+  };
+
+  const handleUpdateLead = async (leadId: string, updates: Partial<Lead>) => {
+    // Atualização otimista
+    const previousLeads = [...leads];
+    setLeads(leads.map(lead => lead.id === leadId ? { ...lead, ...updates } : lead));
+    
+    try {
+      await updateLead(leadId, updates);
+      toast({
+        title: "Lead Atualizado",
+        description: "Informações foram salvas com sucesso.",
+        className: "bg-success text-success-foreground"
+      });
+    } catch (error) {
+      setLeads(previousLeads);
+      toast({
+        title: "Erro ao Salvar",
+        description: "Não foi possível atualizar o lead no sistema.",
+        variant: "destructive"
+      });
     }
   };
 
@@ -160,7 +185,7 @@ const Dashboard = () => {
     ));
     
     try {
-      await updateLeadStatus(leadId, "Qualificado");
+      await updateLead(leadId, { conversion: "Qualificado" });
       toast({
         title: "Lead Qualificado",
         className: "bg-success text-success-foreground"
@@ -176,7 +201,7 @@ const Dashboard = () => {
     ));
     
     try {
-      await updateLeadStatus(leadId, "Desqualificado");
+      await updateLead(leadId, { conversion: "Desqualificado" });
       toast({
         title: "Lead Desqualificado",
         className: "bg-success text-success-foreground"
@@ -296,6 +321,7 @@ const Dashboard = () => {
           lead={selectedLead}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onUpdate={handleUpdateLead}
         />
       </div>
     </div>

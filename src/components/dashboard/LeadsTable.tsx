@@ -75,6 +75,7 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
             <TableHead className="font-bold text-foreground">Status</TableHead>
             <TableHead className="font-bold text-foreground">Plataforma</TableHead>
             <TableHead className="font-bold text-foreground">Data</TableHead>
+            <TableHead className="font-bold text-foreground">Hora:Min</TableHead>
             <TableHead className="font-bold text-foreground">Nome</TableHead>
             <TableHead className="font-bold text-foreground">Telefone</TableHead>
             <TableHead className="font-bold text-foreground">Atendimento N°</TableHead>
@@ -98,6 +99,9 @@ export const LeadsTable = ({ leads, onLeadClick, onQualify, onDisqualify }: Lead
               <TableCell className="font-semibold">{getPlatformText(lead.platform)}</TableCell>
               <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
                 {format(new Date(lead.event_time), "dd/MM/yyyy", { locale: ptBR })}
+              </TableCell>
+              <TableCell className="text-sm text-muted-foreground whitespace-nowrap font-mono tracking-tighter">
+                {lead.hora_min || (lead as any)["hora/min"] || "00:00"}
               </TableCell>
               <TableCell className="font-medium text-foreground">{lead.name}</TableCell>
               <TableCell className="text-sm font-mono tracking-tighter">{lead.phone_number}</TableCell>

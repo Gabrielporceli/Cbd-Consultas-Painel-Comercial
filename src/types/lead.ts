@@ -30,4 +30,5 @@ export interface Lead {
   ad_url?: string;
   ad_type?: string;
   conversion: ConversionStatus;
+  hora_min?: string;
 }
