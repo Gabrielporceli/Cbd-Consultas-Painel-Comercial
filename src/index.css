@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Founders Grotesk Font Family */
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('/fonts/FoundersGrotesk-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('/fonts/FoundersGrotesk-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('/fonts/FoundersGrotesk-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('/fonts/FoundersGrotesk-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('/fonts/FoundersGrotesk-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Founders Grotesk XCond';
+  src: url('/fonts/FoundersGroteskXCond-Lt.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Founders Grotesk XCond';
+  src: url('/fonts/FoundersGroteskXCond-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GOAT CRM Theme - Dark Mode with Purple Accents */
+@layer base {
+  :root {
+    --background: 240 6% 7%; /* Darker background from lead-goat-flow */
+    --foreground: 0 0% 88%;
+
+    --card: 240 6% 7%;
+    --card-foreground: 0 0% 88%;
+
+    --popover: 240 6% 7%;
+    --popover-foreground: 0 0% 88%;
+
+    --primary: 265 65% 46%; /* #6829c0 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+
+    --accent: 0 0% 25%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.1 61% 91%;
+
+    --warning: 38 92.2% 50%;
+    --warning-foreground: 48 96% 89%;
+
+    --border: 0 0% 25%;
+    --input: 0 0% 15%;
+    --ring: 265 65% 46%;
+
+    --radius: 1rem;
+
+    /* Premium UI Tokens */
+    --glass-bg: rgba(18, 18, 18, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: 16px;
+
+    --premium-purple: 265 65% 46%;
+    --premium-purple-light: 265 65% 55%;
+    --premium-glow: 265 100% 70%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    background-color: #121212 !important;
+    color: #e1e1e1 !important;
+    font-family: 'Founders Grotesk', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #eaeaea !important;
+    @apply font-bold;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-goat-purple to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .glass-effect {
+    background: rgba(18, 18, 18, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .liquid-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: url('/background.png') no-repeat center center fixed !important;
+    background-size: cover !important;
+    filter: brightness(0.8) contrast(1.1);
+  }
+
+  @keyframes pan-background {
+    0% { background-position: 0% 0%; transform: scale(1); }
+    100% { background-position: 100% 100%; transform: scale(1.05); }
+  }
+
+  .liquid-glass {
+    position: relative;
+    overflow: hidden;
+    background: rgba(18, 18, 18, 0.5) !important; /* Slightly more opaque for better legibility */
+    backdrop-filter: blur(8px) saturate(160%) brightness(1.1) !important; /* Even subtler blur */
+    -webkit-backdrop-filter: blur(8px) saturate(160%) brightness(1.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+    transform: translate3d(0, 0, 0); /* Force sharpness */
+  }
+
+  /* Dynamic Border Shine based on TiltWrapper variables */
+  .liquid-glass::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mask-image: radial-gradient(120px circle at calc(var(--tilt-x, 50) * 1%) calc(var(--tilt-y, 50) * 1%), black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(120px circle at calc(var(--tilt-x, 50) * 1%) calc(var(--tilt-y, 50) * 1%), black 20%, transparent 70%);
+  }
+
+  .liquid-glass:hover::after {
+    opacity: 1;
+  }
+
+  /* Enhanced elements inside glass */
+  .liquid-glass input,
+  .liquid-glass select,
+  .liquid-glass button:not(.btn-primary):not([role="switch"]) {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+    color: white !important;
+  }
+
+  .liquid-glass input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .liquid-glass input:focus,
+  .liquid-glass button:not(.btn-primary):focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(104, 41, 192, 0.2) !important;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-goat-purple hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200;
+    color: white !important;
+  }
+
+  .dashboard-glow {
+    @apply transition-all duration-500 ease-in-out;
+    position: relative;
+    margin-bottom: 2px;
+    isolation: isolate;
+  }
+
+  .dashboard-glow:hover {
+    transform: translateY(-4px);
+    @apply shadow-[0_20px_40px_-15px_#000000b3] border-primary/30 bg-white/[0.05];
+    z-index: 10;
+  }
+
+  /* Global Motion Toggle Overrides */
+  .disable-motion .dashboard-glow:hover {
+    transform: none !important;
+  }
+
+  .disable-motion .animate-fade-in,
+  .disable-motion [class*="animate-"] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6829c0;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}
+
